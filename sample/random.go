@@ -4,7 +4,12 @@ import (
 	"github.com/google/uuid"
 	"grpc_test/pb/message"
 	"math/rand"
+	"time"
 )
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 
 func randomKeyboardLayout() message.Keyboard_Layout {
 	switch rand.Intn(3) {

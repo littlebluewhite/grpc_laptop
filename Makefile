@@ -4,3 +4,5 @@ clean:
 	rm pb/message/*.go
 run:
 	go run main.go
+test:
+	go test -cover -race ./...
