@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -11,6 +12,7 @@ import (
 
 // LaptopServer si the server that provides laptop services
 type LaptopServer struct {
+	Store LaptopStore
 }
 
 // NewLaptopServer returns a new LaptopServer
@@ -38,5 +40,20 @@ func (server *LaptopServer) CreateLaptop(
 		}
 		laptop.Id = id.String()
 	}
-	return nil, nil
+
+	// save th laptop to in-memory store
+	err := server.Store.Save(laptop)
+	if err != nil {
+		code := codes.Internal
+		if errors.Is(err, ErrAlreadyExists) {
+			code = codes.AlreadyExists
+		}
+		return nil, status.Errorf(code, "cannot save laptop to the store: %v", err)
+	}
+	log.Printf("saved laptop with id: %s", laptop.Id)
+
+	res := &message.CreateLaptopResponse{
+		Id: laptop.Id,
+	}
+	return res, nil
 }
