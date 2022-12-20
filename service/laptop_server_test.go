@@ -1,8 +1,10 @@
 package service
 
 import (
+	"context"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"grpc_test/pb/message"
 	"grpc_test/sample"
 	"testing"
@@ -52,5 +54,33 @@ func TestServerCreateLaptop(t *testing.T) {
 			store:  storeDuplicateID,
 			code:   codes.AlreadyExists,
 		},
+	}
+	for i := range testCases {
+		tc := testCases[i]
+
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			req := &message.CreateLaptopRequest{
+				Laptop: tc.laptop,
+			}
+
+			server := NewLaptopServer(tc.store)
+			res, err := server.CreateLaptop(context.Background(), req)
+			if tc.code == codes.OK {
+				require.NoError(t, err)
+				require.NotNil(t, res)
+				require.NotEmpty(t, res.Id)
+				if len(tc.laptop.Id) > 0 {
+					require.Equal(t, tc.laptop.Id, res.Id)
+				} else {
+					require.Error(t, err)
+					require.NotNil(t, res)
+					st, ok := status.FromError(err)
+					require.True(t, ok)
+					require.Equal(t, tc.code, st.Code())
+				}
+			}
+		})
 	}
 }

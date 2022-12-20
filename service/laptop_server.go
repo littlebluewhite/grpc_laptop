@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 	"grpc_test/pb/message"
 	"log"
+	"time"
 )
 
 // LaptopServer si the server that provides laptop services
@@ -16,8 +17,8 @@ type LaptopServer struct {
 }
 
 // NewLaptopServer returns a new LaptopServer
-func NewLaptopServer() *LaptopServer {
-	return &LaptopServer{}
+func NewLaptopServer(store LaptopStore) *LaptopServer {
+	return &LaptopServer{store}
 }
 
 func (server *LaptopServer) CreateLaptop(
@@ -39,6 +40,19 @@ func (server *LaptopServer) CreateLaptop(
 			return nil, status.Errorf(codes.Internal, "cannot generate a new laptop ID: %v", err)
 		}
 		laptop.Id = id.String()
+	}
+
+	// some heavy processing
+	time.Sleep(6 * time.Second)
+
+	if ctx.Err() == context.Canceled {
+		log.Print("request is canceled")
+		return nil, status.Error(codes.Canceled, "request is canceled")
+	}
+
+	if ctx.Err() == context.DeadlineExceeded {
+		log.Print("deadline is exceeded")
+		return nil, status.Error(codes.DeadlineExceeded, "deadline is exceeded")
 	}
 
 	// save th laptop to in-memory store
