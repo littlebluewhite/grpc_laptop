@@ -8,7 +8,6 @@ import (
 	"google.golang.org/grpc/status"
 	"grpc_test/pb/message"
 	"log"
-	"time"
 )
 
 // LaptopServer si the server that provides laptop services
@@ -43,7 +42,7 @@ func (server *LaptopServer) CreateLaptop(
 	}
 
 	// some heavy processing
-	time.Sleep(6 * time.Second)
+	//time.Sleep(6 * time.Second)
 
 	if ctx.Err() == context.Canceled {
 		log.Print("request is canceled")
