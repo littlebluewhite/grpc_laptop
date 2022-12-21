@@ -1,10 +1,11 @@
 package service
 
 import (
+	"context"
 	"errors"
-	"fmt"
-	"github.com/jinzhu/copier"
 	"grpc_test/pb/message"
+	"grpc_test/util"
+	"log"
 	"sync"
 )
 
@@ -18,7 +19,7 @@ type LaptopStore interface {
 	// Find finds a laptop by ID
 	Find(id string) (*message.Laptop, error)
 	// Search searches for laptops with filter, returns one by one via the found function
-	Search(filter *message.Filter, found func(laptop *message.Laptop) error) error
+	Search(ctx context.Context, filter *message.Filter, found func(laptop *message.Laptop) error) error
 }
 
 type InMemoryLaptopStore struct {
@@ -42,10 +43,9 @@ func (store *InMemoryLaptopStore) Save(laptop *message.Laptop) error {
 	}
 
 	// deep copy
-	other := &message.Laptop{}
-	err := copier.Copy(other, laptop)
+	other, err := util.DeepCopy(laptop)
 	if err != nil {
-		return fmt.Errorf("cannot copy laptop data: %w", err)
+		return err
 	}
 
 	store.data[other.Id] = other
@@ -62,16 +62,11 @@ func (store *InMemoryLaptopStore) Find(id string) (*message.Laptop, error) {
 	}
 
 	// deep copy
-	other := &message.Laptop{}
-	err := copier.Copy(other, laptop)
-	if err != nil {
-		return nil, fmt.Errorf("cannot copy laptop data: %v", err)
-	}
-
-	return other, nil
+	return util.DeepCopy(laptop)
 }
 
 func (store *InMemoryLaptopStore) Search(
+	ctx context.Context,
 	filter *message.Filter,
 	found func(laptop *message.Laptop) error,
 ) error {
@@ -79,9 +74,27 @@ func (store *InMemoryLaptopStore) Search(
 	defer store.mutex.RUnlock()
 
 	for _, laptop := range store.data {
+		// heavy processing
+		//time.Sleep(time.Second)
+		log.Print("checking laptop id: ", laptop.Id)
+
+		if ctx.Err() == context.Canceled || ctx.Err() == context.DeadlineExceeded {
+			log.Print("context is canceled")
+			return errors.New("context is canceled")
+		}
+
 		if isQualified(filter, laptop) {
+			other, err := util.DeepCopy(laptop)
+			if err != nil {
+				return err
+			}
+			err = found(other)
+			if err != nil {
+				return err
+			}
 		}
 	}
+	return nil
 }
 
 func isQualified(filter *message.Filter, laptop *message.Laptop) bool {

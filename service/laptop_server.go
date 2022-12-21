@@ -71,3 +71,30 @@ func (server *LaptopServer) CreateLaptop(
 	}
 	return res, nil
 }
+
+func (server *LaptopServer) SearchLaptop(
+	req *message.SearchLaptopRequest,
+	stream message.LaptopService_SearchLaptopServer,
+) error {
+	filter := req.GetFilter()
+	log.Printf("reieve a search-laptop request with filter: %v", filter)
+	err := server.Store.Search(
+		stream.Context(),
+		filter,
+		func(laptop *message.Laptop) error {
+			res := &message.SearchLaptopResponse{
+				Laptop: laptop,
+			}
+			err := stream.Send(res)
+			if err != nil {
+				return err
+			}
+
+			log.Printf("sent laptop with id: %s", laptop.GetId())
+			return nil
+		})
+	if err != nil {
+		return status.Errorf(codes.Internal, "unexpected error: %v", err)
+	}
+	return nil
+}

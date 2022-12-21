@@ -1,0 +1,62 @@
+{
+  "id": "2fcdf64b-5d7c-41f4-805c-d1a49e3c3a11",
+  "brand": "Lenovo",
+  "name": "Thinkpad P53",
+  "cpu": {
+    "brand": "AMD",
+    "name": "Ryzen 3 PRO 3200GE",
+    "number_cores": 3,
+    "number_threads": 11,
+    "min_ghz": 2.5844043966230115,
+    "max_ghz": 3.0736785054544056
+  },
+  "ram": {
+    "value": "61",
+    "unit": "GIGABYTE"
+  },
+  "gpus": [
+    {
+      "brand": "NVIDIA",
+      "name": "RTX 2070",
+      "min_ghz": 1.2314438646425019,
+      "max_ghz": 1.9318257105980554,
+      "memory": {
+        "value": "5",
+        "unit": "GIGABYTE"
+      }
+    }
+  ],
+  "storages": [
+    {
+      "driver": "SDD",
+      "memory": {
+        "value": "433",
+        "unit": "GIGABYTE"
+      }
+    },
+    {
+      "driver": "HDD",
+      "memory": {
+        "value": "2",
+        "unit": "TERABYTE"
+      }
+    }
+  ],
+  "screen": {
+    "size_inch": 16.130314,
+    "resolution": {
+      "width": 4753,
+      "height": 2674
+    },
+    "panel": "OLED",
+    "multitouch": false
+  },
+  "keyboard": {
+    "layout": "QWERTY",
+    "backlit": true
+  },
+  "weight_kg": 1.529025404688167,
+  "price_usd": 2253.3734765268964,
+  "release_year": 2019,
+  "update_at": "2022-11-17T10:38:59.475944858Z"
+}
