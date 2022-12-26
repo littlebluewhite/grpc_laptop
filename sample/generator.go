@@ -2,25 +2,25 @@ package sample
 
 import (
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"grpc_test/pb/message"
+	"grpc_test/pb"
 )
 
-func NewKeyboard() *message.Keyboard {
-	keyboard := &message.Keyboard{
+func NewKeyboard() *pb.Keyboard {
+	keyboard := &pb.Keyboard{
 		Layout:  randomKeyboardLayout(),
 		Backlit: randomBool(),
 	}
 	return keyboard
 }
 
-func NewCPU() *message.CPU {
+func NewCPU() *pb.CPU {
 	brand := randomCPUBrand()
 	name := randomCPUName(brand)
 	numberCores := randomInt(2, 8)
 	numberThreads := randomInt(numberCores, 12)
 	minGhz := randomFloat(2.0, 3.5)
 	maxGhz := randomFloat(minGhz, 5.0)
-	cpu := &message.CPU{
+	cpu := &pb.CPU{
 		Brand:         brand,
 		Name:          name,
 		NumberCores:   uint32(numberCores),
@@ -31,18 +31,18 @@ func NewCPU() *message.CPU {
 	return cpu
 }
 
-func NewGPU() *message.GPU {
+func NewGPU() *pb.GPU {
 	brand := randomGPUBrand()
 	name := randomGPUName(brand)
 
 	minGhz := randomFloat(1.0, 1.5)
 	maxGhz := randomFloat(minGhz, 2.0)
 
-	memory := &message.Memory{
+	memory := &pb.Memory{
 		Value: uint64(randomInt(2, 6)),
-		Unit:  message.Memory_GIGABYTE,
+		Unit:  pb.Memory_GIGABYTE,
 	}
-	gpu := &message.GPU{
+	gpu := &pb.GPU{
 		Brand:  brand,
 		Name:   name,
 		MinGhz: minGhz,
@@ -52,38 +52,38 @@ func NewGPU() *message.GPU {
 	return gpu
 }
 
-func NewRAM() *message.Memory {
-	ram := &message.Memory{
+func NewRAM() *pb.Memory {
+	ram := &pb.Memory{
 		Value: uint64(randomInt(4, 64)),
-		Unit:  message.Memory_GIGABYTE,
+		Unit:  pb.Memory_GIGABYTE,
 	}
 	return ram
 }
 
-func NewSSD() *message.Storage {
-	ssd := &message.Storage{
-		Driver: message.Storage_SDD,
-		Memory: &message.Memory{
+func NewSSD() *pb.Storage {
+	ssd := &pb.Storage{
+		Driver: pb.Storage_SDD,
+		Memory: &pb.Memory{
 			Value: uint64(randomInt(128, 1024)),
-			Unit:  message.Memory_GIGABYTE,
+			Unit:  pb.Memory_GIGABYTE,
 		},
 	}
 	return ssd
 }
 
-func NewHDD() *message.Storage {
-	hdd := &message.Storage{
-		Driver: message.Storage_HDD,
-		Memory: &message.Memory{
+func NewHDD() *pb.Storage {
+	hdd := &pb.Storage{
+		Driver: pb.Storage_HDD,
+		Memory: &pb.Memory{
 			Value: uint64(randomInt(1, 6)),
-			Unit:  message.Memory_TERABYTE,
+			Unit:  pb.Memory_TERABYTE,
 		},
 	}
 	return hdd
 }
 
-func NewScreen() *message.Screen {
-	screen := &message.Screen{
+func NewScreen() *pb.Screen {
+	screen := &pb.Screen{
 		SizeInch:   randomFloat[float32](13, 17),
 		Resolution: randomScreenResolution(),
 		Panel:      randomScreenPanel(),
@@ -92,20 +92,20 @@ func NewScreen() *message.Screen {
 	return screen
 }
 
-func NewLaptop() *message.Laptop {
+func NewLaptop() *pb.Laptop {
 	brand := randomLaptopBrand()
 	name := randomLaptopName(brand)
-	laptop := &message.Laptop{
+	laptop := &pb.Laptop{
 		Id:       randomID(),
 		Brand:    brand,
 		Name:     name,
 		Cpu:      NewCPU(),
 		Ram:      NewRAM(),
-		Gpus:     []*message.GPU{NewGPU()},
-		Storages: []*message.Storage{NewSSD(), NewHDD()},
+		Gpus:     []*pb.GPU{NewGPU()},
+		Storages: []*pb.Storage{NewSSD(), NewHDD()},
 		Screen:   NewScreen(),
 		Keyboard: NewKeyboard(),
-		Weight: &message.Laptop_WeightKg{
+		Weight: &pb.Laptop_WeightKg{
 			WeightKg: randomFloat(1.0, 3.0),
 		},
 		PriceUsd:    randomFloat[float64](1500, 3000),

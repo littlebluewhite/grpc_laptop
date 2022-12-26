@@ -2,7 +2,7 @@ package sample
 
 import (
 	"github.com/google/uuid"
-	"grpc_test/pb/message"
+	"grpc_test/pb"
 	"math/rand"
 	"time"
 )
@@ -11,14 +11,14 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func randomKeyboardLayout() message.Keyboard_Layout {
+func randomKeyboardLayout() pb.Keyboard_Layout {
 	switch rand.Intn(3) {
 	case 1:
-		return message.Keyboard_QWERTY
+		return pb.Keyboard_QWERTY
 	case 2:
-		return message.Keyboard_QWERTZ
+		return pb.Keyboard_QWERTZ
 	default:
-		return message.Keyboard_AZERTY
+		return pb.Keyboard_AZERTY
 	}
 }
 
@@ -81,21 +81,21 @@ func randomLaptopName(brand string) string {
 	}
 }
 
-func randomScreenResolution() *message.Screen_Resolution {
+func randomScreenResolution() *pb.Screen_Resolution {
 	height := randomInt(1080, 4320)
 	width := height * 16 / 9
-	resolution := &message.Screen_Resolution{
+	resolution := &pb.Screen_Resolution{
 		Height: uint32(height),
 		Width:  uint32(width),
 	}
 	return resolution
 }
 
-func randomScreenPanel() message.Screen_Panel {
+func randomScreenPanel() pb.Screen_Panel {
 	if rand.Intn(2) == 1 {
-		return message.Screen_IPS
+		return pb.Screen_IPS
 	} else {
-		return message.Screen_OLED
+		return pb.Screen_OLED
 	}
 }
 

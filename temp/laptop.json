@@ -1,27 +1,27 @@
 {
-  "id": "2fcdf64b-5d7c-41f4-805c-d1a49e3c3a11",
-  "brand": "Lenovo",
-  "name": "Thinkpad P53",
+  "id": "516a2dc7-477c-44b4-ac5b-86916c4a8cc0",
+  "brand": "Apple",
+  "name": "Macbook Pro",
   "cpu": {
-    "brand": "AMD",
-    "name": "Ryzen 3 PRO 3200GE",
-    "number_cores": 3,
-    "number_threads": 11,
-    "min_ghz": 2.5844043966230115,
-    "max_ghz": 3.0736785054544056
+    "brand": "Intel",
+    "name": "Xeon E-2286M",
+    "number_cores": 6,
+    "number_threads": 7,
+    "min_ghz": 2.993649761258978,
+    "max_ghz": 4.244656056196082
   },
   "ram": {
-    "value": "61",
+    "value": "54",
     "unit": "GIGABYTE"
   },
   "gpus": [
     {
-      "brand": "NVIDIA",
-      "name": "RTX 2070",
-      "min_ghz": 1.2314438646425019,
-      "max_ghz": 1.9318257105980554,
+      "brand": "AMD",
+      "name": "RX580",
+      "min_ghz": 1.1391010201210667,
+      "max_ghz": 1.7798217543966302,
       "memory": {
-        "value": "5",
+        "value": "6",
         "unit": "GIGABYTE"
       }
     }
@@ -30,23 +30,23 @@
     {
       "driver": "SDD",
       "memory": {
-        "value": "433",
+        "value": "1017",
         "unit": "GIGABYTE"
       }
     },
     {
       "driver": "HDD",
       "memory": {
-        "value": "2",
+        "value": "4",
         "unit": "TERABYTE"
       }
     }
   ],
   "screen": {
-    "size_inch": 16.130314,
+    "size_inch": 13.969367,
     "resolution": {
-      "width": 4753,
-      "height": 2674
+      "width": 2526,
+      "height": 1421
     },
     "panel": "OLED",
     "multitouch": false
@@ -55,8 +55,8 @@
     "layout": "QWERTY",
     "backlit": true
   },
-  "weight_kg": 1.529025404688167,
-  "price_usd": 2253.3734765268964,
-  "release_year": 2019,
-  "update_at": "2022-11-17T10:38:59.475944858Z"
+  "weight_kg": 1.2819083813123309,
+  "price_usd": 1545.93777656405,
+  "release_year": 2018,
+  "update_at": "2022-12-26T11:19:52.466243484Z"
 }

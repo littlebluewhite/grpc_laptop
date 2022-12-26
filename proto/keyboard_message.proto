@@ -1,6 +1,6 @@
 syntax = "proto3";
 package proto;
-option go_package = "pb/message";
+option go_package = "/pb";
 message Keyboard {
   enum Layout {
     UNKNOWN = 0;

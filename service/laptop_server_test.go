@@ -5,7 +5,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"grpc_test/pb/message"
+	"grpc_test/pb"
 	"grpc_test/sample"
 	"testing"
 )
@@ -26,7 +26,7 @@ func TestServerCreateLaptop(t *testing.T) {
 
 	testCases := []struct {
 		name   string
-		laptop *message.Laptop
+		laptop *pb.Laptop
 		store  LaptopStore
 		code   codes.Code
 	}{
@@ -61,11 +61,11 @@ func TestServerCreateLaptop(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			req := &message.CreateLaptopRequest{
+			req := &pb.CreateLaptopRequest{
 				Laptop: tc.laptop,
 			}
 
-			server := NewLaptopServer(tc.store)
+			server := NewLaptopServer(tc.store, nil)
 			res, err := server.CreateLaptop(context.Background(), req)
 			if tc.code == codes.OK {
 				require.NoError(t, err)
