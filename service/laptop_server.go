@@ -18,11 +18,12 @@ const maxImageSize = 1 << 20
 type LaptopServer struct {
 	laptopStore LaptopStore
 	imageStore  ImageStore
+	ratingStore RatingStore
 }
 
 // NewLaptopServer returns a new LaptopServer
-func NewLaptopServer(laptopStore LaptopStore, imageStore ImageStore) *LaptopServer {
-	return &LaptopServer{laptopStore, imageStore}
+func NewLaptopServer(laptopStore LaptopStore, imageStore ImageStore, ratingStore RatingStore) *LaptopServer {
+	return &LaptopServer{laptopStore, imageStore, ratingStore}
 }
 
 func (server *LaptopServer) CreateLaptop(
@@ -167,6 +168,31 @@ func (server *LaptopServer) UploadImage(stream pb.LaptopService_UploadImageServe
 	}
 
 	log.Printf("save image with id: %s, size: %d", imageID, imageSize)
+	return nil
+}
+
+func (server *LaptopServer) RateLaptop(stream pb.LaptopService_RateLaptopServer) error {
+	for {
+		err := contextError(stream.Context())
+		if err != nil {
+			return err
+		}
+
+		req, err := stream.Recv()
+		if err == io.EOF {
+			log.Print("no more data")
+			break
+		}
+
+		if err != nil {
+			return logError(status.Errorf(codes.Unknown, "cannot receive stream request: %v", err))
+		}
+
+		laptopID := req.GetLaptopId()
+		score := req.GetScore()
+
+		log.Printf("received a rate-laptop request: id = %s, score = %.2f", laptopID, score)
+	}
 	return nil
 }
 
