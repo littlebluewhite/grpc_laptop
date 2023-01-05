@@ -122,3 +122,7 @@ func randomFloat[T float64 | float32](min, max T) T {
 func randomID() string {
 	return uuid.New().String()
 }
+
+func RandomLaptopScore() float64 {
+	return float64(randomInt(1, 10))
+}
